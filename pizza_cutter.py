@@ -64,6 +64,37 @@ if people:
     - 📊 Percentage: **{percent_each:.1f}%**
     """)
 
+# Final score evaluation logic (without auto-triggered balloons)
+correct_answers = {
+    "Q1": "1/6 of the pizza",
+    "Q2": "1 ÷ 8", 
+    "Q3": "1/10 of the pizza",
+    "Q4": "1/4 (bigger slices)",
+    "Q5": "3 ÷ 8",
+    "Q6": "2/12 of the pizza"
+}
+
+submitted = st.button("🎯 Check My Pizza Powers!", type="primary")
+
+if submitted:
+    responses = st.session_state.get("responses", {})
+    score = sum(1 for key, correct in correct_answers.items() if responses.get(key) == correct)
+    if responses.get("Problem_Answer") == responses.get("Problem_Choice"):
+        score += 1
+
+    total_questions = 7
+    st.markdown(f"### 📊 Your Pizza Score: {score}/{total_questions} ({(score/total_questions)*100:.0f}%)")
+
+    if score == total_questions:
+        st.success("🌟 PIZZA MASTER! You've conquered fractions and division! 🍕👑")
+        st.balloons()
+    elif score >= 6:
+        st.success("🎯 AWESOME! You're a Pizza Math Expert! Just review the ones you missed!")
+    elif score >= 4:
+        st.info("👍 GOOD JOB! You're getting the hang of pizza math! Keep practicing!")
+    else:
+        st.warning("📚 Keep exploring! Use the pizza wheel to help you understand fractions better!")
+
 st.markdown("""
 <div style="margin-top: 50px; padding: 20px; border-radius: 10px; background: #fff0f0; color: #990000;">
 <b>Note:</b> This page had JavaScript loading issues. The calculator above is provided as a fallback.
