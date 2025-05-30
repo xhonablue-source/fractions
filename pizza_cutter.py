@@ -21,87 +21,96 @@ st.markdown("""
 st.markdown("<h1 style='text-align: center; color: #ff6b6b; font-size: 2.2em;'>🍕 Pizza Math Adventures!</h1>", unsafe_allow_html=True)
 st.markdown("<h3 style='text-align: center; color: #666; font-style: italic;'>Learn fractions and division the delicious way!</h3>", unsafe_allow_html=True)
 
-# Error Handling Info Box
-st.markdown("""
-### ⚠️ Component Load Errors
-If you see `TypeError: Failed to fetch dynamically imported module`, it means that your browser or the Streamlit environment couldn't fetch a JavaScript module required by a custom component. 
+# Initialize session state
+if "responses" not in st.session_state:
+    st.session_state.responses = {}
+if "all_responses" not in st.session_state:
+    st.session_state.all_responses = []
 
-This often happens when:
-- A custom Streamlit component uses external JS with `import()` statements.
-- The app is referencing a module not bundled properly.
-
-### Fix Options:
-- Inline all JS and CSS used in your `st.components.v1.html()` content.
-- Avoid referencing paths like `/_+/static/js/...`
-- Consider deploying external modules as fully bundled apps and using an iframe instead.
-
-**Recommendation:** Refactor broken JS dependencies to inline HTML/JS or a bundled component.
-""")
-
-# Simple Calculator for Backup
+# Student Information
 st.markdown("---")
-st.markdown("### 🧩 Quick Pizza Share Calculator")
-
-col1, col2, col3 = st.columns(3)
+st.markdown("### 👨‍🎓 Student Information")
+col1, col2 = st.columns(2)
 with col1:
-    pizzas = st.number_input("Number of Pizzas", min_value=1, max_value=10, value=2)
+    name = st.text_input("Your Name:", key="student_name", placeholder="Enter your first and last name")
 with col2:
-    slices_per_pizza = st.number_input("Slices per Pizza", min_value=1, max_value=16, value=8)
-with col3:
-    people = st.number_input("People Sharing", min_value=1, max_value=50, value=12)
+    date = st.text_input("Today's Date:", key="student_date", placeholder="MM/DD/YYYY")
 
-if people:
-    total_slices = pizzas * slices_per_pizza
-    slices_each = total_slices / people
-    fraction_each = slices_each / slices_per_pizza
-    percent_each = fraction_each * 100
+st.session_state.responses.update({"Name": name, "Date": date})
 
-    st.markdown(f"""
-    **Results:**
-    - 🔢 Total slices: **{total_slices}**
-    - 📊 Per person: **{slices_each:.2f} slices**
-    - 📊 Fraction of pizza: **{fraction_each:.3f}**
-    - 📊 Percentage: **{percent_each:.1f}%**
+# Learning Standards
+st.markdown("---")
+st.markdown("### 📚 Learning Standards - Grade 5")
+with st.expander("🎯 Click to see what we're learning today!"):
+    st.markdown("""
+    **5.NF.1** - Add and subtract fractions with unlike denominators
+    *🍕 Applied through: Understanding pizza slices as fractions (1/8, 1/4, etc.)*
+
+    **5.NF.2** - Solve word problems involving addition and subtraction of fractions
+    *🍕 Applied through: Real pizza sharing scenarios and fraction combinations*
+
+    **5.NF.3** - Interpret a fraction as division of the numerator by the denominator
+    *🍕 Applied through: Understanding that 3/8 means 3 ÷ 8*
     """)
 
-# Final score evaluation logic (without auto-triggered balloons)
-correct_answers = {
-    "Q1": "1/6 of the pizza",
-    "Q2": "1 ÷ 8", 
-    "Q3": "1/10 of the pizza",
-    "Q4": "1/4 (bigger slices)",
-    "Q5": "3 ÷ 8",
-    "Q6": "2/12 of the pizza"
+# Learning Objective
+st.markdown("---")
+st.markdown("""
+### 🎯 Today's Pizza Mission!
+
+**Your Mission:** Become a Pizza Math Expert! You'll learn to:
+- 🍕 Cut pizzas into equal parts (fractions!)
+- 🧮 Understand what fractions really mean
+- ➖ See how division and fractions are best friends
+- 🎮 Use our amazing Pizza Wheel to explore math
+
+**Big Secret:** Math is everywhere - especially in pizza! 😫
+""")
+
+# Section: Practice Questions
+st.markdown("---")
+st.markdown("### 🎮 Section: Practice Questions")
+
+questions = {
+    "Q1": ("If a pizza is cut into 6 equal slices, each slice is:", "1/6 of the pizza"),
+    "Q2": ("What does 1/8 mean as division?", "1 ÷ 8"),
+    "Q3": ("If 10 people share 1 pizza equally, each gets:", "1/10 of the pizza"),
+    "Q4": ("Which is bigger: 1/4 or 1/8?", "1/4 (bigger slices)"),
+    "Q5": ("3/8 as a division problem is:", "3 ÷ 8"),
+    "Q6": ("If you eat 2 slices of a pizza cut into 12 pieces, you ate:", "2/12 of the pizza")
 }
 
-submitted = st.button("🎯 Check My Pizza Powers!", type="primary")
+for key, (qtext, correct_answer) in questions.items():
+    answer = st.selectbox(qtext, ["", correct_answer, "Wrong option 1", "Wrong option 2"], key=key)
+    st.session_state.responses[key] = answer
+    if answer and answer == correct_answer:
+        st.success("🌟 Correct!")
+    elif answer:
+        st.error("❌ Try again!")
 
-if submitted:
-    responses = st.session_state.get("responses", {})
-    score = sum(1 for key, correct in correct_answers.items() if responses.get(key) == correct)
-    if responses.get("Problem_Answer") == responses.get("Problem_Choice"):
-        score += 1
+# Final Check Button
+st.markdown("---")
+st.markdown("### ✅ Check Your Pizza Powers!")
+correct_answers = {k: v[1] for k, v in questions.items()}
 
-    total_questions = 7
-    st.markdown(f"### 📊 Your Pizza Score: {score}/{total_questions} ({(score/total_questions)*100:.0f}%)")
+if st.button("🎯 Check My Pizza Powers!", type="primary"):
+    score = 0
+    for q, correct in correct_answers.items():
+        if st.session_state.responses.get(q) == correct:
+            score += 1
 
-    if score == total_questions:
-        st.success("🌟 PIZZA MASTER! You've conquered fractions and division! 🍕👑")
+    total = len(correct_answers)
+    st.markdown(f"### 📊 Your Score: {score}/{total} ({(score/total)*100:.0f}%)")
+
+    if score == total:
+        st.success("🌟 PIZZA MASTER! You've mastered every slice of math!")
         st.balloons()
-    elif score >= 6:
-        st.success("🎯 AWESOME! You're a Pizza Math Expert! Just review the ones you missed!")
     elif score >= 4:
-        st.info("👍 GOOD JOB! You're getting the hang of pizza math! Keep practicing!")
+        st.info("👍 Great job! Just a few more to become a master!")
     else:
-        st.warning("📚 Keep exploring! Use the pizza wheel to help you understand fractions better!")
+        st.warning("📈 Keep practicing and use pizza as your guide!")
 
-st.markdown("""
-<div style="margin-top: 50px; padding: 20px; border-radius: 10px; background: #fff0f0; color: #990000;">
-<b>Note:</b> This page had JavaScript loading issues. The calculator above is provided as a fallback.
-</div>
-""", unsafe_allow_html=True)
-
-# Final Footer
+# Footer
 st.markdown("---")
 st.markdown("""
 <div style="text-align: center; padding: 10px; color: #666; font-size: 0.9em;">
