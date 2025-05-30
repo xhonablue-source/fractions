@@ -1,14 +1,8 @@
-# MathCraft Streamlit App with Toppings, Audio, Word Problems, and Analytics
+# MathCraft Streamlit App (No matplotlib dependency)
 import streamlit as st
-import matplotlib
-matplotlib.use('Agg')
-import matplotlib.pyplot as plt
-import matplotlib.patches as patches
-import numpy as np
 import pandas as pd
+import numpy as np
 import random
-import base64
-from io import BytesIO
 
 # Page configuration
 st.set_page_config(
@@ -52,39 +46,18 @@ st.markdown(f"Each person gets **1/{party_size}** of the pizza, or **{slice_frac
 st.markdown("### 🍕 Build Your Pizza!")
 toppings = st.multiselect("Choose your toppings:", ["Pepperoni", "Mushrooms", "Olives", "Green Peppers", "Onions"])
 
-# Draw Pizza with Toppings
-fig, ax = plt.subplots(figsize=(6, 6))
-circle = plt.Circle((0, 0), 1, color='wheat')
-ax.add_patch(circle)
-
-# Draw slices
-for i in range(party_size):
-    theta = 2 * np.pi * i / party_size
-    x, y = np.cos(theta), np.sin(theta)
-    ax.plot([0, x], [0, y], color='brown', lw=2)
-
-# Add toppings
-for _ in range(20):
-    angle = random.uniform(0, 2 * np.pi)
-    radius = random.uniform(0, 0.8)
-    x = radius * np.cos(angle)
-    y = radius * np.sin(angle)
-    if "Pepperoni" in toppings:
-        ax.plot(x, y, 'o', color='red', markersize=10)
-    if "Olives" in toppings:
-        ax.plot(x, y, 'o', color='black', markersize=5)
-    if "Mushrooms" in toppings:
-        ax.plot(x, y, '^', color='tan', markersize=7)
-    if "Green Peppers" in toppings:
-        ax.plot(x, y, 's', color='green', markersize=6)
-    if "Onions" in toppings:
-        ax.plot(x, y, '*', color='purple', markersize=6)
-
-ax.set_xlim(-1.2, 1.2)
-ax.set_ylim(-1.2, 1.2)
-ax.set_aspect('equal')
-ax.axis('off')
-st.pyplot(fig)
+# Pizza summary (visual simulation replaced with emoji feedback)
+pizza_display = f"<h3 style='color: tomato;'>Your Pizza with {party_size} Slices</h3>"
+if toppings:
+    topping_emojis = {
+        "Pepperoni": "🍕", "Mushrooms": "🍄", "Olives": "🥜",
+        "Green Peppers": "🌶️", "Onions": "🧂"
+    }
+    emoji_string = " ".join(topping_emojis[t] for t in toppings if t in topping_emojis)
+    pizza_display += f"<p style='font-size: 2em;'>{emoji_string}</p>"
+else:
+    pizza_display += "<p><i>No toppings selected</i></p>"
+st.markdown(pizza_display, unsafe_allow_html=True)
 
 # Practice Questions
 st.markdown("---")
