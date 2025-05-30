@@ -74,6 +74,20 @@ st.markdown("**Get ready for some pizza magic!** This isn't just any pizza - it'
 # Interactive Pizza Wheel Introduction
 people_count = st.slider("🎉 How many people are coming to your pizza party?", 2, 16, 8, key="people_slider")
 
+# Add special celebrations for key numbers
+if people_count == 8:
+    st.success("🎯 Perfect! 8 people = 1/8 each = 0.125 = 12.5% per person!")
+elif people_count == 4:
+    st.success("🎉 Fantastic! 4 people = 1/4 each = 0.25 = 25% per person!")
+    st.balloons()
+elif people_count == 2:
+    st.success("🍕 Amazing! 2 people = 1/2 each = 0.5 = 50% per person!")
+    st.balloons()
+elif people_count == 16:
+    st.info("🤯 Wow! 16 people = 1/16 each = 0.0625 = 6.25% per person - tiny slices!")
+elif people_count == 12:
+    st.info("🎂 Like a birthday party! 12 people = 1/12 each = 0.083 = 8.33% per person!")
+
 st.markdown(f"""
 ### 🧮 The Math Magic:
 
@@ -327,6 +341,15 @@ st.markdown("**Are you ready for the BIGGEST math secret ever?** Fractions and d
 
 # Discovery demonstration
 discovery_slices = st.slider("🔍 Test this with different slice counts:", 2, 12, 8, key="discovery_slider")
+
+# Add celebration when students discover the pattern
+if discovery_slices == 4:
+    st.info("🎯 Try 1/4 = 1 ÷ 4 = 0.25 - Perfect quarters!")
+elif discovery_slices == 8:
+    st.info("🍕 Classic pizza! 1/8 = 1 ÷ 8 = 0.125 per slice!")
+elif discovery_slices == 2:
+    st.success("🎉 Half and half! 1/2 = 1 ÷ 2 = 0.5 - You discovered halves!")
+    st.balloons()
 
 col1, col2, col3 = st.columns(3)
 
@@ -677,6 +700,15 @@ if problem_choice == "The Birthday Party Challenge":
         ["Each friend gets 1/8 of a pizza", "Each friend gets 2/8 of a pizza", "Each friend gets 16/12 slices", "Each friend gets 4/3 slices"],
         key="party_q1"
     )
+    
+    # Instant feedback for Birthday Party Challenge
+    if party_answer == "Each friend gets 4/3 slices":
+        st.success("🎉 EXCELLENT! You solved the Birthday Party Challenge perfectly!")
+        st.balloons()
+        st.info("💡 Great reasoning: 16 total slices ÷ 12 friends = 16/12 = 4/3 slices each!")
+    elif party_answer != "Each friend gets 4/3 slices" and party_answer != "":
+        st.error("❌ Not quite! Remember: 2 pizzas × 8 slices = 16 total slices, then 16 ÷ 12 friends = 4/3")
+        st.info("🤔 Hint: Calculate total slices first, then divide by number of friends!")
 
 elif problem_choice == "The Sleepover Pizza Crisis":
     st.markdown("""
@@ -691,6 +723,15 @@ elif problem_choice == "The Sleepover Pizza Crisis":
         ["2 slices each (2/12 of the pizza)", "3 slices each (3/12 of the pizza)", "1 slice each (1/12 of the pizza)", "6 slices each"],
         key="sleepover_q1"
     )
+    
+    # Instant feedback for Sleepover Crisis
+    if sleepover_answer == "2 slices each (2/12 of the pizza)":
+        st.success("🌙 PERFECT! You solved the sleepover crisis!")
+        st.balloons()
+        st.info("💡 Excellent math: 12 slices ÷ 6 kids = 2 slices each!")
+    elif sleepover_answer != "2 slices each (2/12 of the pizza)" and sleepover_answer != "":
+        st.error("❌ Try again! 12 slices ÷ 6 kids = ? slices each")
+        st.info("🤔 Hint: How many times does 6 go into 12?")
 
 elif problem_choice == "The Class Party Planner":
     st.markdown("""
@@ -705,6 +746,15 @@ elif problem_choice == "The Class Party Planner":
         ["1/8 of a pizza", "1/24 of a pizza", "3/24 of a pizza", "8/24 of a pizza"],
         key="class_q1"
     )
+    
+    # Instant feedback for Class Party
+    if class_answer == "1/8 of a pizza":
+        st.success("🎓 BRILLIANT! You're ready to plan any class party!")
+        st.balloons()
+        st.info("💡 Smart thinking: 24 slices ÷ 24 students = 1 slice each = 1/8 of a pizza!")
+    elif class_answer != "1/8 of a pizza" and class_answer != "":
+        st.error("❌ Think step by step! 3 pizzas × 8 slices = 24 total slices for 24 students")
+        st.info("🤔 Hint: If each student gets 1 slice, and each pizza has 8 slices, what fraction is that?")
 
 elif problem_choice == "The Family Dinner Dilemma":
     st.markdown("""
@@ -719,6 +769,15 @@ elif problem_choice == "The Family Dinner Dilemma":
         ["1/5 of the pizza", "5/1 of the pizza", "1/4 of the pizza", "2/5 of the pizza"],
         key="family_q1"
     )
+    
+    # Instant feedback for Family Dinner
+    if family_answer == "1/5 of the pizza":
+        st.success("👨‍👩‍👧‍👦 WONDERFUL! The Johnson family will be so happy!")
+        st.balloons()
+        st.info("💡 Perfect logic: 1 pizza ÷ 5 people = 1/5 each!")
+    elif family_answer != "1/5 of the pizza" and family_answer != "":
+        st.error("❌ Remember the basic rule: 1 pizza ÷ number of people = fraction each")
+        st.info("🤔 Hint: 1 pizza shared among 5 people means each gets 1/? of the pizza")
 
 # Section 4: Practice Questions
 st.markdown("---")
@@ -730,21 +789,82 @@ with practice_col1:
     q1 = st.selectbox("If a pizza is cut into 6 equal slices, each slice is:", 
                      ["1/6 of the pizza", "6/1 of the pizza", "1/5 of the pizza", "6 pizzas"], key="q1")
     
+    # Instant feedback for Q1
+    if q1 == "1/6 of the pizza":
+        st.success("🌟 Correct! Perfect understanding of fractions!")
+        st.balloons()
+    elif q1 != "1/6 of the pizza" and q1 != "":
+        st.error("❌ Not quite! Remember: 1 pizza ÷ 6 slices = 1/6 per slice")
+    
     q2 = st.selectbox("What does 1/8 mean as division?", 
                      ["1 ÷ 8", "8 ÷ 1", "1 + 8", "1 × 8"], key="q2")
     
+    # Instant feedback for Q2
+    if q2 == "1 ÷ 8":
+        st.success("🎯 Excellent! Fractions ARE division!")
+        st.balloons()
+    elif q2 != "1 ÷ 8" and q2 != "":
+        st.error("❌ Try again! Fractions mean division: 1/8 = 1 ÷ 8")
+    
     q3 = st.selectbox("If 10 people share 1 pizza equally, each gets:", 
                      ["1/10 of the pizza", "10/1 of the pizza", "1/9 of the pizza", "2/10 of the pizza"], key="q3")
+    
+    # Instant feedback for Q3
+    if q3 == "1/10 of the pizza":
+        st.success("🍕 Amazing! You've mastered pizza sharing!")
+        st.balloons()
+    elif q3 != "1/10 of the pizza" and q3 != "":
+        st.error("❌ Think again! 1 pizza ÷ 10 people = 1/10 each")
 
 with practice_col2:
     q4 = st.selectbox("Which is bigger: 1/4 or 1/8?", 
                      ["1/4 (bigger slices)", "1/8 (more slices)", "They're equal", "Can't tell"], key="q4")
     
+    # Instant feedback for Q4
+    if q4 == "1/4 (bigger slices)":
+        st.success("🧠 Brilliant! Fewer pieces = bigger slices!")
+        st.balloons()
+    elif q4 != "1/4 (bigger slices)" and q4 != "":
+        st.error("❌ Think about pizza: Would you rather have 1/4 or 1/8 of a pizza?")
+    
     q5 = st.selectbox("3/8 as a division problem is:", 
                      ["3 ÷ 8", "8 ÷ 3", "3 + 8", "3 × 8"], key="q5")
     
+    # Instant feedback for Q5
+    if q5 == "3 ÷ 8":
+        st.success("🚀 Outstanding! You understand fractions perfectly!")
+        st.balloons()
+    elif q5 != "3 ÷ 8" and q5 != "":
+        st.error("❌ Remember: 3/8 means 3 ÷ 8")
+    
     q6 = st.selectbox("If you eat 2 slices of a pizza cut into 12 pieces, you ate:", 
                      ["2/12 of the pizza", "12/2 of the pizza", "2/10 of the pizza", "1/6 of the pizza"], key="q6")
+    
+    # Instant feedback for Q6
+    if q6 == "2/12 of the pizza":
+        st.success("🎉 Perfect! 2 slices out of 12 = 2/12!")
+        st.balloons()
+    elif q6 != "2/12 of the pizza" and q6 != "":
+        st.error("❌ Count carefully: 2 slices out of 12 total = 2/12")
+
+# Add celebration for getting all answers right
+correct_count = 0
+answers = [q1, q2, q3, q4, q5, q6]
+correct_answers_list = ["1/6 of the pizza", "1 ÷ 8", "1/10 of the pizza", "1/4 (bigger slices)", "3 ÷ 8", "2/12 of the pizza"]
+
+for i, answer in enumerate(answers):
+    if answer == correct_answers_list[i]:
+        correct_count += 1
+
+if correct_count == 6 and all(answer != "" for answer in answers):
+    st.markdown("### 🏆 PIZZA MASTER ACHIEVEMENT UNLOCKED! 🏆")
+    st.success("🌟 INCREDIBLE! You got ALL 6 questions correct! You're officially a Pizza Math Expert!")
+    st.balloons()
+    st.markdown("🎊 **Congratulations!** 🎊")
+elif correct_count >= 4 and all(answer != "" for answer in answers):
+    st.markdown("### 🎯 Excellent Work!")
+    st.success(f"Great job! You got {correct_count} out of 6 correct!")
+    st.balloons()
 
 # Section 5: Creative Pizza Math
 st.markdown("---")
